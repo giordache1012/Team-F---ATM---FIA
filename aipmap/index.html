@@ -1,28 +1,77 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-	<title>aipmap</title>
+    <title>aipmap</title>
 
-	<script src="libraries/p5.js"></script>
-	<script src="libraries/p5.dom.js"></script>
-	<script src="libraries/p5.sound.js"></script>
-	<script src="sketch.js"></script>
+    <script src="libraries/p5.js"></script>
+    <script src="libraries/p5.dom.js"></script>
+    <script src="libraries/p5.sound.js"></script>
+    <script src="sketch.js"></script>
 
-	<style>
-		body {
-			margin:0;
-			padding:0;
-			overflow: hidden;
-		}
-		canvas {
-			margin:auto;
-		}
-	</style>
+    <!--	 Use a script tag in the head element to include the jQuery library.
+     We'll use jQuery to simplify the process of opening and reading the XML file. -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+    <style>
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <!--	Start with the following basic Google Map. Make sure to replace YOUR_API_KEY
+     in the script tag with your API key that you got from https://developers.google.com/maps.-->
+    <script>
+
+        function initMap() {
+            var mapOptions = {
+                zoom: 3,
+                center: new google.maps.LatLng(37.5, -122),
+                mapTypeId: 'roadmap'
+            };
+            var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+            // Inside the initMap() function, after the var map = statement, use jQuery to load the .xml file.
+            // Pass the xml data into the success callback function.
+
+            $.ajax({
+                type: "GET",
+                async: true,
+                url: "coordinates.xml",
+                dataType: "xml",
+                success:
+                    function (xml) {
+                        // Inside the callback function, create an array of places from the XML data.
+                        var places = xml.documentElement.getElementsByTagName("place");
+                        // Loop through each marker and add it to the map.
+                        for (var i = 0; i < places.length; i++) {
+                            var lat = places[i].getAttribute('latitude');
+                            var long = places[i].getAttribute('longitude');
+                            var latLng = new google.maps.LatLng(lat, long);
+                            var marker = new google.maps.Marker({
+                                position: latLng,
+                                map: map,
+                                label: places[i].name
+                            });
+                        }
+                    }
+            });
+        }
+    </script>
 </head>
 <body>
+<div id="map"></div>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCMQRNZN5fgG_ub7_J-hsPpvs2mfxh8PS8&callback=initMap">
+</script>
 </body>
 </html>

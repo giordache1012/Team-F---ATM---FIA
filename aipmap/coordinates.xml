@@ -1,0 +1,10 @@
+<!--Create an XML file containing the latitude and longitude of places
+ you want to display as markers and save the file with the extension .xml.-->
+
+
+<root>
+    <place name="Niagra Falls" latitude="43.0962" longitude="-79.0377"/>
+    <place name="Yosemite Falls" latitude="37.7566" longitude="-119.5969"/>
+    <place name="Multnomah Falls" latitude="45.5762" longitude="-122.1158"/>
+    <place name="Snoqualmie Falls" latitude="47.5417" longitude="-121.8377"/>
+</root>
